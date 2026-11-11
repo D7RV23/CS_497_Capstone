@@ -25,7 +25,7 @@
             pythonPackages.scikit-learn
             pythonPackages.pandas
 	          pythonPackages.torch
-            pythonPackages.cv2
+           #  pythonPackages.cv2
           ];
 
           shellHook = ''

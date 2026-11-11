@@ -3,7 +3,7 @@ import random
 
 
 def main():
-    sample_number = 1000
+    sample_number = 1
     dataset = load_dataset("ealvaradob/phishing-dataset", "texts", trust_remote_code=True)
 
         # Collect all samples and separate by label
@@ -32,30 +32,35 @@ def main():
         print(f"Warning: Only {len(phishing_samples)} phishing samples available, using all of them")
         selected_phishing = phishing_samples
 
-    # Save genuine samples to text files
+    # Saving and formatting the samples in json format(needed for piping into llm's)
+    # Save genuine samples 
     print("Saving genuine email samples...")
     for i, sample in enumerate(selected_genuine, 1):
-        filename = f"g-hf-{i:04d}"
+        filename = f"g-hf-{i:04d}.json"
         with open(filename, 'w', encoding='utf-8') as f:
-            f.write(f"Sample: g-hf-{i:04d}\n")
-            f.write("Label: Legitimate\n")
-            f.write("Text:\n")
+            f.write("{\n")
+            f.write(f'"Sample": "g-hf-{i:04d}",\n')
+            f.write('"Label": "Legitimate",\n')
+            f.write('"Text": "')
             f.write(sample['text'])
+            f.write('"\n}\n')
         print(f"Saved {filename}")
-
-    # Save phishing samples to files in json format
+        
+    # Saving Phishing samples
     print("\nSaving phishing email samples...")
     for i, sample in enumerate(selected_phishing, 1):
-        filename = f"p-hf-{i:04d}"
+        filename = f"p-hf-{i:04d}.json"
         with open(filename, 'w', encoding='utf-8') as f:
-            f.write("{}")
-            f.write(f"Sample: p-hf-{i:04d}\n")
-            f.write("Label: Phishing\n")
-            f.write("Text:", sample['text']\n)
-            f.write("}")
+            f.write("{\n")
+            f.write(f'"Sample": "p-hf-{i:04d}",\n')
+            f.write('"Label": "Phishing",\n')
+            f.write(f'"Text: "')
+            f.write(sample['text'])
+            f.write('"\n}\n')
         print(f"Saved {filename}")
-
-print(f"\nCreated {len(selected_genuine)} genuine and {len(selected_phishing)} phishing email files.")
+        
+    # Terminal Output configrming samples where extracted
+    print(f"\nCreated {len(selected_genuine)} genuine and {len(selected_phishing)} phishing email files.")
 
 
 if __name__ == "__main__":
