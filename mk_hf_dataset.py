@@ -1,13 +1,29 @@
 from datasets import load_dataset
 import random
 import json
+import os
 
+# Setting up Variables
+SEED = 1987
+SAMPLES_PER_CLASS = 1
+
+# Saves the samples as local json files, does it through the json library rather than by hand
 def genJson(fileName, sampleId, label,text):
-
-    pass
+    with open(fileName,'w',encoding='utf8') as f:
+        json.dump(
+            {"Sample": sampleId, "Label": label, "Text": text},
+            f, ensure_ascii=False,indent=2
+        )
 
 def main():
-    sample_number = 1
+    # Setting Seed for randomization
+    random.seed(SEED)
+    # Setting up path for storing samples // is in the .git
+
+
+    # Number of samples obtained
+    sample_number = SAMPLES_PER_CLASS
+    # Used for obraing the samples from Huggin Face
     dataset = load_dataset("ealvaradob/phishing-dataset", "texts", trust_remote_code=True)
 
         # Collect all samples and separate by label
@@ -41,26 +57,14 @@ def main():
     print("Saving genuine email samples...")
     for i, sample in enumerate(selected_genuine, 1):
         filename = f"g-hf-{i:04d}.json"
-        with open(filename, 'w', encoding='utf-8') as f:
-            f.write("{\n")
-            f.write(f'"Sample": "g-hf-{i:04d}",\n')
-            f.write('"Label": "Legitimate",\n')
-            f.write('"Text": "')
-            f.write(sample['text'])
-            f.write('"\n}\n')
+        genJson(filename, f"g-hf-{i:04d}", "Legitimate", sample['text'])
         print(f"Saved {filename}")
         
     # Saving Phishing samples
     print("\nSaving phishing email samples...")
     for i, sample in enumerate(selected_phishing, 1):
         filename = f"p-hf-{i:04d}.json"
-        with open(filename, 'w', encoding='utf-8') as f:
-            f.write("{\n")
-            f.write(f'"Sample": "p-hf-{i:04d}",\n')
-            f.write('"Label": "Phishing",\n')
-            f.write(f'"Text: "')
-            f.write(sample['text'])
-            f.write('"\n}\n')
+        genJson(filename, f"g-hf-{i:04d}", "Phishing", sample['text'])
         print(f"Saved {filename}")
         
     # Terminal Output configrming samples where extracted
