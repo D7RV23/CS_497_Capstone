@@ -1,6 +1,10 @@
 from datasets import load_dataset
 import random
+import json
 
+def genJson(fileName, sampleId, label,text):
+
+    pass
 
 def main():
     sample_number = 1
