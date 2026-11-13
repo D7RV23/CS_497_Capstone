@@ -5,7 +5,7 @@ import os
 
 # Global Variables
 SEED = 1987
-SAMPLES_PER_CLASS = 1
+SAMPLES_PER_CLASS = 1000
 OUTPUT_DIR = "data"
 # Saves the samples as local json files, does it through the json library rather than by hand
 def genJson(fileName, sampleId, label,text):
