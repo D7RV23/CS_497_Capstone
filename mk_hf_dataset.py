@@ -3,10 +3,10 @@ import random
 import json
 import os
 
-# Setting up Variables
+# Global Variables
 SEED = 1987
 SAMPLES_PER_CLASS = 1
-
+OUTPUT_DIR = "data"
 # Saves the samples as local json files, does it through the json library rather than by hand
 def genJson(fileName, sampleId, label,text):
     with open(fileName,'w',encoding='utf8') as f:
@@ -19,8 +19,7 @@ def main():
     # Setting Seed for randomization
     random.seed(SEED)
     # Setting up path for storing samples // is in the .git
-
-
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
     # Number of samples obtained
     sample_number = SAMPLES_PER_CLASS
     # Used for obraing the samples from Huggin Face
@@ -57,14 +56,14 @@ def main():
     print("Saving genuine email samples...")
     for i, sample in enumerate(selected_genuine, 1):
         filename = f"g-hf-{i:04d}.json"
-        genJson(filename, f"g-hf-{i:04d}", "Legitimate", sample['text'])
+        genJson(os.path.join(OUTPUT_DIR,filename), f"g-hf-{i:04d}", "Legitimate", sample['text'])
         print(f"Saved {filename}")
         
     # Saving Phishing samples
     print("\nSaving phishing email samples...")
     for i, sample in enumerate(selected_phishing, 1):
         filename = f"p-hf-{i:04d}.json"
-        genJson(filename, f"g-hf-{i:04d}", "Phishing", sample['text'])
+        genJson(os.path.join(OUTPUT_DIR,filename), f"g-hf-{i:04d}", "Phishing", sample['text'])
         print(f"Saved {filename}")
         
     # Terminal Output configrming samples where extracted
